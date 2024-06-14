@@ -1,7 +1,2 @@
 #!/bin/bash
-# This script changes the owner of the file 'hello' to 'betty' if it is owned by 'guillaume'.
-
-# Check if the file 'hello' exists and is owned by 'guillaume'
-if [ -e hello ] && [ "$(stat -c %U hello)" = "guillaume" ]; then
-    sudo chown betty hello
-fi
+chown --from=guillaume brtty hello
