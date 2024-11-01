@@ -1,6 +1,4 @@
 #!/bin/bash
-
-# Read /etc/passwd line by line
-while IFS=: read -r username _ user_id _ home_directory _; do
-    echo "$username:$user_id:$home_directory"
+while IFS=: read -r username password userid groupid info homedir shell; do
+    echo "$username:$userid:$homedir"
 done < /etc/passwd
