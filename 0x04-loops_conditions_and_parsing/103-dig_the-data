@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# 103-dig_the-data
+# Script to group visitors by IP and HTTP status code and sort by occurrence
+# Format: OCCURENCE_NUMBER IP HTTP_CODE
+
+awk '{print $1 " " $9}' apache-access.log | sort | uniq -c | sort -rn
