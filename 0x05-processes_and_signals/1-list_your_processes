@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-# Script: 1-list_your_processes
-# Description: Displays a list of currently running processes
-# Requirements: Shows all processes, for all users, including those without TTY
-#              Displays in user-oriented format with process hierarchy
-# Author: Your Name
-# Date: Current Date
+# This script displays a list of currently running processes.
 
-ps -auxf
+ps -ef --forest
