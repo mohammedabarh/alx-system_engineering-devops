@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# 102-lets_parse_apache_logs
+# Script to parse Apache logs and display IP and HTTP status code
+# Format: IP HTTP_CODE
+
+awk '{print $1 " " $9}' apache-access.log
