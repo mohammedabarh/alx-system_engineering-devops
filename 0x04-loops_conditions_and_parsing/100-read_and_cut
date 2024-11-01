@@ -1,15 +1,5 @@
-#!/usr/bin/env bash
-# display_passwd.sh
-# This script displays the content of /etc/passwd with specific fields:
-# username, user ID, and home directory.
-
-# Check if the /etc/passwd file exists and is readable
-if [ ! -f /etc/passwd ]; then
-    echo "/etc/passwd not found."
-    exit 1
-fi
-
-# Read /etc/passwd and print the desired fields
-while IFS=: read -r username x userid x x homedir x; do
+#!/bin/bash
+while IFS=: read -r username x userid x x homedir x
+do
     echo "$username:$userid:$homedir"
-done < "/etc/passwd"
+done < /etc/passwd
