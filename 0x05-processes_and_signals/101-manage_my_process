@@ -1,7 +1,42 @@
 #!/usr/bin/env bash
-# This script writes "I am alive!" to a file indefinitely
+# Init script to manage manage_my_process
 
-while true; do
-    echo "I am alive!" >> /tmp/my_process
-    sleep 2
-done
+PIDFILE="/var/run/my_process.pid"
+SCRIPT="./manage_my_process"
+
+start() {
+    # Start the process
+    $SCRIPT &
+    echo $! > $PIDFILE
+    echo "manage_my_process started"
+}
+
+stop() {
+    # Stop the process
+    if [ -f "$PIDFILE" ]; then
+        pid=$(cat $PIDFILE)
+        kill $pid
+        rm $PIDFILE
+    fi
+    echo "manage_my_process stopped"
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        echo "manage_my_process restarted"
+        ;;
+    *)
+        echo "Usage: manage_my_process {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
