@@ -1,49 +1,37 @@
 #!/usr/bin/env bash
-# Init script to manage the manage_my_process daemon
-# Usage: manage_my_process {start|stop|restart}
+# Init script to manage manage_my_process
 
 PIDFILE="/var/run/my_process.pid"
 SCRIPT="./manage_my_process"
 
-# Function to start the process
-start_process() {
-    if [ -e "$PIDFILE" ]; then
-        echo "manage_my_process is already running."
-        exit 1
-    fi
+start() {
+    # Start the process
     $SCRIPT &
-    echo "$!" > "$PIDFILE"
+    echo $! > $PIDFILE
     echo "manage_my_process started"
 }
 
-# Function to stop the process
-stop_process() {
-    if [ -e "$PIDFILE" ]; then
-        kill "$(cat "$PIDFILE")"
-        rm "$PIDFILE"
-        echo "manage_my_process stopped"
-    else
-        echo "manage_my_process is not running."
+stop() {
+    # Stop the process
+    if [ -f "$PIDFILE" ]; then
+        pid=$(cat $PIDFILE)
+        kill $pid
+        rm $PIDFILE
     fi
+    echo "manage_my_process stopped"
 }
 
-# Function to restart the process
-restart_process() {
-    stop_process
-    start_process
-    echo "manage_my_process restarted"
-}
-
-# Main case statement for command handling
 case "$1" in
     start)
-        start_process
+        start
         ;;
     stop)
-        stop_process
+        stop
         ;;
     restart)
-        restart_process
+        stop
+        start
+        echo "manage_my_process restarted"
         ;;
     *)
         echo "Usage: manage_my_process {start|stop|restart}"
