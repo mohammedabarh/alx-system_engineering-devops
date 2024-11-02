@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Init script to manage manage_my_process daemon
+# Init script to manage the manage_my_process daemon
 # Usage: manage_my_process {start|stop|restart}
 
 PIDFILE="/var/run/my_process.pid"
@@ -19,13 +19,19 @@ start_process() {
 # Function to stop the process
 stop_process() {
     if [ -e "$PIDFILE" ]; then
-        pid=$(cat "$PIDFILE")
-        kill "$pid"
+        kill "$(cat "$PIDFILE")"
         rm "$PIDFILE"
         echo "manage_my_process stopped"
     else
         echo "manage_my_process is not running."
     fi
+}
+
+# Function to restart the process
+restart_process() {
+    stop_process
+    start_process
+    echo "manage_my_process restarted"
 }
 
 # Main case statement for command handling
@@ -37,9 +43,7 @@ case "$1" in
         stop_process
         ;;
     restart)
-        stop_process
-        start_process
-        echo "manage_my_process restarted"
+        restart_process
         ;;
     *)
         echo "Usage: manage_my_process {start|stop|restart}"

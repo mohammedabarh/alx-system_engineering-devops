@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 # This script writes "I am alive!" indefinitely to /tmp/my_process
-# with a 2-second pause between each message
+# with a 2-second pause between each message.
 
+# Check if the script is run with root privileges
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root. Please use sudo."
+    exit 1
+fi
+
+# Infinite loop to write messages
 while true; do
     echo "I am alive!" >> /tmp/my_process
     sleep 2
