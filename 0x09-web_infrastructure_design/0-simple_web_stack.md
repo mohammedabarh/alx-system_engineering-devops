@@ -1,7 +1,7 @@
 imple Web Stack
 
 ## Diagram
-![Simple Web Stack Diagram](https://link-to-your-image-host.com/simple_web_stack_diagram)
+https://github.com/mohammedabarh/alx-system_engineering-devops/blob/master/0x09-web_infrastructure_design/0-simple_web_stack.png
 
 ## Design Overview
 In this simple web infrastructure, a user accesses the website `www.foobar.com`, which is hosted on a single server.
