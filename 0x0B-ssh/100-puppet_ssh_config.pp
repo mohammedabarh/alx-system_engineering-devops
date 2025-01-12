@@ -1,11 +1,14 @@
+# Puppet manifest to configure ssh client
 file_line { 'Turn off passwd auth':
-    path => '/home/your_user/.ssh/config',
-    line => 'PasswordAuthentication no',
-    require => Package['openssh-client'],
+  ensure => present,
+  path   => '/etc/ssh/ssh_config',
+  line   => '    PasswordAuthentication no',
+  match  => '^#?[\s]*PasswordAuthentication',
 }
 
 file_line { 'Declare identity file':
-    path => '/home/your_user/.ssh/config',
-    line => 'IdentityFile ~/.ssh/school',
-    require => Package['openssh-client'],
+  ensure => present,
+  path   => '/etc/ssh/ssh_config',
+  line   => '    IdentityFile ~/.ssh/school',
+  match  => '^#?[\s]*IdentityFile',
 }
