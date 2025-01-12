@@ -2,7 +2,7 @@
 # server-01 login script
 
 # Start the SSH agent
-eval "$(ssh-agent -s)"
+eval  $("ssh-agent")
 
 # Add the private key
 ssh-add ~/.ssh/school
