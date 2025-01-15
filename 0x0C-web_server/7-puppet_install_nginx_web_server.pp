@@ -1,28 +1,20 @@
-class { 'nginx': }
+# Install NginX
+package { 'nginx':
+  ensure => 'installed'
+}
 
 file { '/var/www/html/index.html':
-    ensure => file,
-    content => 'Hello World!',
+  content => 'Hello World',
 }
 
-file { '/var/www/html/404.html':
-    ensure => file,
-    content => "Ceci n'est pas une page",
+file_line { 'install':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-available/default',
+  after  => 'listen 80 default_server;',
+  line   => 'rewrite ^/redirect_me https://www.youtube.com@cryptoappcodergroup permanent;',
 }
 
-nginx::resource::vhost { 'localhost':
-    listen_port => 80,
-    server_name => 'localhost',
-    root => "/var/www/html",
-    index_file => 'index.html',
-    error_page => {
-        '404' => '/404.html',
-    },
-}
-
-nginx::resource::proxy { 'redirect_me':
-    ensure => present,
-    vhost => 'localhost',
-    proxy_pass => 'https://www.youtube.com/watch?v=QH2-TGUlwu4',
-    redirect => 'permanent',
+service { 'nginx':
+  ensure  => running,
+  require => Package['nginx'],
 }
