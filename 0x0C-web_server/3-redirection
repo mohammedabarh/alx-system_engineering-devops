@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# this script configures nginx to redirect /redirect_me to another page.
+
+# create a new nginx configuration file for the redirection
+cat > /etc/nginx/sites-available/redirect <<eof
+server {
+    listen 80;
+    server_name _;
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=qh2-tgulwu4;
+    }
+}
+eof
+
+# enable the new configuration by creating a symbolic link
+ln -sf /etc/nginx/sites-available/redirect /etc/nginx/sites-enabled/
+
+# test the nginx configuration
+nginx -t
+
+# restart nginx to apply the changes
+service nginx restart
