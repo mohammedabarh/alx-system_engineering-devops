@@ -1,21 +1,26 @@
-#Install Nginx server, setup and configuration
+# Install Nginx server, setup and configuration
 
 package { 'nginx':
-  ensure => 'installed'
+  ensure => 'installed',
 }
 
+# Create the index.html file with "Hello World"
 file { '/var/www/html/index.html':
+  ensure  => 'file',
   content => 'Hello World',
 }
 
-file_line { 'install':
+# Configure Nginx to redirect /redirect_me
+file_line { 'redirect_me':
   ensure => 'present',
   path   => '/etc/nginx/sites-available/default',
-  after  => 'listen 80 default_server;',
-  line   => 'rewrite ^/redirect_me https://www.youtube.com@cryptoappcodergroup permanent;',
+  line   => 'rewrite ^/redirect_me https://www.youtube.com permanent;',
+  require => Package['nginx'],
 }
 
+# Ensure the Nginx service is running
 service { 'nginx':
-  ensure  => running,
-  require => Package['nginx'],
+  ensure => running,
+  enable => true,  # Ensure Nginx starts on boot
+  subscribe => File['/etc/nginx/sites-available/default'],  # Restart if the config file changes
 }
