@@ -10,4 +10,4 @@ sudo /ect/init.d/apache2 start
 echo "Hello ALX" > /var/www/html/index.html
 
 # Start Apache service
-sudo /ect/init.d/apache2
+sudo /ect/init.d/apache2 restart
