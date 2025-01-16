@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# This script installs Apache and sets up a simple webpage
+
+# Update package list and install Apache
+sudo apt-get update
+sudo apt-get install -y apache2
+sudo /ect/init.d/apache2 start
+
+# Create the webpage
+echo "Hello ALX" > /var/www/html/index.html
+
+# Start Apache service
+sudo /ect/init.d/apache2
