@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
-# This script installs Apache and sets up a simple webpage
+# This script fixes the issue by installing Apache and serving a simple webpage
 
 # Update package list and install Apache
-sudo apt-get update
-sudo apt-get install -y apache2
-sudo /ect/init.d/apache2 start
+apt-get update
+apt-get install -y apache2
 
-# Create the webpage
+# Create a simple webpage
 echo "Hello ALX" > /var/www/html/index.html
 
 # Start Apache service
-sudo /ect/init.d/apache2 restart
+service apache2 start
+
+# Ensure Apache starts on boot
+update-rc.d apache2 defaults
