@@ -1,0 +1,32 @@
+s script configures Nginx on a new Ubuntu machine to add a custom HTTP response header
+
+# Update the package list
+sudo apt update
+
+# Install Nginx if it is not already installed
+sudo apt install -y nginx
+
+# Set the hostname based on the server's expected naming convention
+sudo hostnamectl set-hostname "$(hostname)"
+
+# Create a configuration file for Nginx
+cat <<EOF | sudo tee /etc/nginx/sites-available/default
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        root /var/www/html;
+        index index.html index.htm;
+    }
+
+    # Add the custom header
+    add_header X-Served-By "$(hostname)";
+}
+EOF
+
+# Test Nginx configuration for syntax errors
+sudo nginx -t
+
+# Restart Nginx to apply changes
+sudo systemctl restart nginx
