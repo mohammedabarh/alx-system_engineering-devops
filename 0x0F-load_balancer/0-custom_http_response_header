@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# nstall Nginx with the initial configuration
+# tall Nginx with the initial configuration
 # Add a custom HTTP header indicating the server hostname
 
 apt-get update
