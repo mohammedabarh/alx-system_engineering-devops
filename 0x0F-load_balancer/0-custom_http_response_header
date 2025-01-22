@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# tall Nginx with the initial configuration
+# Install Nginx with the initial configuration
 # Add a custom HTTP header indicating the server hostname
 
 apt-get update
@@ -18,7 +18,7 @@ printf %s "server {
     root   /var/www/html;
     index  index.html index.htm;
     location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=xJJsoquu70o/;
+        return 301 https://www.youtube.com/@cryptoappcodergroup;
     }
     error_page 404 /404.html;
     location /404 {
