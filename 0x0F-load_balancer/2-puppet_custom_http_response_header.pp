@@ -1,25 +1,26 @@
+# Puppet manifest to configure Nginx with a custom HTTP response header
 
-# Script to install nginx using puppet
-
-package {'nginx':
-  ensure => 'present',
+class { 'nginx':
+  package_ensure => 'installed',
 }
 
-exec {'install':
-  command  => 'sudo apt-get update ; sudo apt-get -y install nginx',
-  provider => shell,
+file { '/etc/nginx/conf.d/custom_header.conf':
+  ensure  => 'file',
+  content => "server {
+    listen 80;
+    server_name _;
+
+    add_header X-Served-By \$HOSTNAME;
+
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}\n",
+  notify  => Service['nginx'],
 }
 
-exec {'Holberton':
-  command  => 'echo "Holberton School" | sudo tee /var/www/html/index.html',
-  provider => shell,
-}
-
-exec {'sudo sed -i "s/listen 80 default_server;/listen 80 default_server;\\n\\tlocation \/redirect_me {\\n\\t\\treturn 301 https:\/\/www.youtube.com\/;\\n\\t}/" /etc/nginx/sites-available/default':
-  provider => shell,
-}
-
-exec {'run':
-  command  => 'sudo service nginx restart',
-  provider => shell,
+service { 'nginx':
+  ensure => 'running',
+  enable => true,
 }
