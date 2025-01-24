@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
-# Changes the listening port for Nginx from 8080 to 80.
-
-# Modify the Nginx configuration file to replace port 8080 with 80
+# Changes port in Nginx
 sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
-
-# Restart the Nginx service to apply the new configuration
 sudo service nginx restart
-
-# Forcefully kill the Nginx process using the PID from the specified file
 kill -9 "$(cat /var/run/nginx.pid)"
