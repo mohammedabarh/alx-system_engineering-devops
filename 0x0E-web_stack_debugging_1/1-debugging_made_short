@@ -1,4 +1,5 @@
-hanges the listening port for Nginx from 8080 to 80.
+#!/usr/bin/env bash
+# Changes the listening port for Nginx from 8080 to 80.
 
 # Modify the Nginx configuration file to replace port 8080 with 80
 sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
