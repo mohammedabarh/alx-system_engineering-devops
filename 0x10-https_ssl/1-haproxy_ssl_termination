@@ -1,0 +1,28 @@
+# Global settings
+global
+    log /dev/log local0
+    maxconn 2000
+    tune.ssl.default-dh-param 2048
+
+# Default settings
+defaults
+    log global
+    option httplog
+    option dontlognull
+    timeout client 30s
+    timeout server 30s
+    timeout connect 30s
+
+# Frontend for HTTP traffic
+frontend http
+    bind *:80
+    bind *:443 ssl crt /etc/letsencrypt/live/www.cryptoappcodergroup.tech/cryptoappcodergroup.pem
+    mode http
+    default_backend load_b
+
+# Backend for load balancing
+backend load_b
+    mode http
+    balance roundrobin
+    server web-01 54.164.253.166:80 check
+    server web-02 52.204.144.35:80 check
