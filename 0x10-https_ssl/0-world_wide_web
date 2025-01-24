@@ -1,30 +1,20 @@
-
-
 #!/usr/bin/env bash
-# Displays information about subdomains of the specified domain
+#  Displays information about subdomains of the specified domain
 
 
 
-# Check the number of arguments provided
-if [ "$#" = 1 ]; then
-    # Define an array of default subdomains to check
+if [ "$#" = 1 ]
+then
     subdomains=("www" "lb-01" "web-01" "web-02")
-    
-    # Loop through each subdomain
-    for sub_domain in "${subdomains[@]}"; do
-        # Retrieve the record type for the subdomain
+    for sub_domain in "${subdomains[@]}"
+    do
         record_type=$(dig "$sub_domain.$1" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $4}')
-        # Retrieve the IP address for the subdomain
         ip_address=$(dig "$sub_domain.$1" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $5}')
-        # Output the information about the subdomain
         echo "The subdomain $sub_domain is a $record_type record and points to $ip_address"
     done
-# Check if two arguments are provided
-elif [ "$#" = 2 ]; then
-    # Retrieve the record type for the specified subdomain
+elif [ "$#" = 2 ]
+then
     record_type=$(dig "$2.$1" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $4}')
-    # Retrieve the IP address for the specified subdomain
     ip_address=$(dig "$2.$1" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $5}')
-    # Output the information about the specified subdomain
     echo "The subdomain $2 is a $record_type record and points to $ip_address"
 fi
