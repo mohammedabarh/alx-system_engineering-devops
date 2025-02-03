@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Install nginx on web server; Nginx should be listening on port 80
+# redirects to another page
+
+apt-get -y update
+apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+echo "Hello World!" > sudo /var/www/html/index.nginx-debian.html
+sudo touch /var/www/html/404.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+sed -i "/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/@cryptoappcodergroup permanent;" /etc/nginx/sites-available/default
+sed -i "/listen 80 default_server/a error_page 404 /404.html;" /etc/nginx/sites-available/default
+service nginx restart

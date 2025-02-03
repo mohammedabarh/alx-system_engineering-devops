@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-# server-01 login script
+# Connects to the server using the specified private key
 
-# Start the SSH agent
-eval  $("ssh-agent")
-
-# Add the private key
-ssh-add ~/.ssh/school
-
-# Connect to the server
-ssh ubuntu@100.25.143.8
+ssh ubuntu@54.164.253.166 -i ~/.ssh/school
