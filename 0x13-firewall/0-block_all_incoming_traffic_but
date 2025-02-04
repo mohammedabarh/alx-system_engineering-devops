@@ -1,0 +1,14 @@
+#!/bin/env bash
+
+# Set default incoming policy to deny
+sudo apt install -y ufw
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+
+# Allow specific ports
+sudo ufw allow 22/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 80/tcp
+
+# Enable UFW
+sudo ufw enable
