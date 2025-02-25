@@ -1,14 +1,25 @@
 #!/usr/bin/python3
-"""Module for querying the Reddit API"""
+"""
+Module for querying the Reddit API recursively to get hot posts
+"""
 import requests
 
 
-def recurse(subreddit, hot_list=[], after=None):
-    """Returns a list of titles of all hot articles for a given subreddit"""
+def recurse(subreddit, hot_list=None, after=None):
+    """
+    Returns a list containing the titles of all hot articles for a given subreddit
+    Args:
+        subreddit: The subreddit to search
+        hot_list: List to store titles (default None)
+        after: Token for pagination (default None)
+    Returns:
+        List of titles if successful, None if subreddit is invalid
+    """
+    if hot_list is None:
+        hot_list = []
+
+    headers = {'User-Agent': 'linux:0x16.api.advanced:v1.0.0 (by /u/your_username)'}
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
-    headers = {
-        'User-Agent': 'linux:0x16.api.advanced:v1.0.0 (by /u/your_username)'
-    }
     params = {'after': after} if after else {}
 
     try:
@@ -22,7 +33,8 @@ def recurse(subreddit, hot_list=[], after=None):
         after = data.get('after')
 
         for post in posts:
-            hot_list.append(post.get('data', {}).get('title'))
+            title = post.get('data', {}).get('title')
+            hot_list.append(title)
 
         if after:
             return recurse(subreddit, hot_list, after)
