@@ -1,45 +1,72 @@
 #!/usr/bin/python3
 """
-Recursive function that queries the Reddit API, parses the title of all hot
+Module for function that queries the Reddit API, parses the title of all hot
 articles, and prints a sorted count of given keywords
 """
 import requests
 
 
-def count_words(subreddit, word_list, after=None, word_count=None):
-    """Prints sorted count of given keywords"""
-    if word_count is None:
-        word_count = {}
+def count_words(subreddit, word_list, after=None, count_dict=None):
+    """
+    Queries Reddit API and counts keywords in hot post titles
+    Args:
+        subreddit: subreddit name
+        word_list: list of keywords to count
+        after: token for next page
+        count_dict: dictionary to store word counts
+    """
+    # Initialize count_dict on first call
+    if count_dict is None:
+        count_dict = {}
         for word in word_list:
-            word_count[word.lower()] = 0
+            # Convert to lowercase and remove duplicates
+            word = word.lower()
+            if word not in count_dict:
+                count_dict[word] = 0
 
-    if not subreddit or not isinstance(subreddit, str):
-        return
+    # Set custom User-Agent to avoid too many requests error
+    headers = {
+        'User-Agent': 'linux:0x16.api.advanced:v1.0.0 (by /u/bdov_)'
+    }
 
-    user_agent = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+    # Set URL and parameters for API request
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
     params = {'after': after} if after else {}
 
     try:
-        response = requests.get(url, headers=user_agent,
-                              params=params, allow_redirects=False)
+        # Make GET request to Reddit API
+        response = requests.get(
+            url,
+            headers=headers,
+            params=params,
+            allow_redirects=False
+        )
+
+        # Return if subreddit is invalid
         if response.status_code != 200:
             return
 
+        # Parse response data
         data = response.json().get('data', {})
         posts = data.get('children', [])
         after = data.get('after')
 
+        # Count keywords in post titles
         for post in posts:
             title = post.get('data', {}).get('title', '').lower()
-            for word in word_count:
-                word_count[word] += title.split().count(word)
+            words = title.split()
+            for word in count_dict:
+                count_dict[word] += words.count(word)
 
+        # Recursively get next page if it exists
         if after:
-            return count_words(subreddit, word_list, after, word_count)
+            return count_words(subreddit, word_list, after, count_dict)
         else:
-            sorted_counts = sorted(word_count.items(),
-                                 key=lambda x: (-x[1], x[0]))
+            # Sort and print results
+            sorted_counts = sorted(
+                count_dict.items(),
+                key=lambda x: (-x[1], x[0])
+            )
             for word, count in sorted_counts:
                 if count > 0:
                     print(f"{word}: {count}")
