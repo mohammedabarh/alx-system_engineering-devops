@@ -1,13 +1,6 @@
 # 0-strace_is_your_friend.pp
 # Fixes a WordPress file that causes Apache to return 500 error
 
-exec { 'fix-wordpress':
-  command => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
-  path    => '/usr/local/bin/:/bin/',
-}
-
-# This Puppet manifest fixes the 500 Internal Server Error for Apache on a WordPress site
-
 # Ensure the required PHP module is installed
 package { 'php5-mysql':
   ensure => installed,
@@ -28,9 +21,17 @@ file { '/var/www/html':
   recurse => true,
 }
 
-# Restart Apache to apply changes
-exec { 'restart_apache':
-  command => '/usr/sbin/service apache2 restart',
+# Fix the WordPress configuration file
+exec { 'fix-wordpress':
+  command     => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
+  path        => ['/usr/local/bin/', '/bin/'],
   refreshonly => true,
-  subscribe => File['/var/www/html'],
+  subscribe   => File['/var/www/html'],
+}
+
+# Restart Apache to apply changes
+exec { 'restart-apache':
+  command     => '/usr/sbin/service apache2 restart',
+  refreshonly => true,
+  subscribe   => [File['/var/www/html'], Exec['fix-wordpress']],
 }
