@@ -1,5 +1,6 @@
-# Manifest to fix apache configuration
-exec { 'fix config file':
-  command =>  "sed -i 's/phpp/php/g' /var/www/html/wp-settings.php",
-  path    => '/bin'
+# Fixing Apache returning a 500 error
+
+exec { 'fix error':
+  provider => 'shell',
+  command  => 'sed -i "s/phpp/php/g" /var/www/html/wp-settings.php'
 }
