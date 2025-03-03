@@ -1,5 +1,7 @@
-# Fixes Apache 500 error by correcting PHP file extension in WordPress settings
-exec { 'fix-wordpress':
-  command => 'sed -i "s/\.phpp/.php/" /var/www/html/wp-settings.php',
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+# a puppet code that fixes a wordpress site 5xx error to 200 ok
+# editing the mistyped .phpp to php in the /var/www/html/wp-settings.php file
+
+exec { 'fix-wordpess-server-error':
+    command => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
+    path    => '/usr/bin/:/bin/',
 }
