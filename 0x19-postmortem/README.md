@@ -1,5 +1,5 @@
 Postmortem: The Great Authentication Apocalypse
-Outage Illustration
+[View Postmortem Image](https://github.com/mohammedabarh/alx-system_engineering-devops/blob/master/0x19-postmortem/postmortem%20technical.webp)
 
 Issue Summary
 Duration: March 15, 2023, from 14:32 to 17:45 UTC
