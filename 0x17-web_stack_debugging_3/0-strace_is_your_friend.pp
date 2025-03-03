@@ -1,7 +1,7 @@
-# a puppet code that fixes a wordpress site 5xx error to 200 ok
-# editing the mistyped .phpp to php in the /var/www/html/wp-settings.php file
+# 0-strace_is_your_friend.pp
+# Fix for WordPress 500 error
 
-exec { 'fix-wordpess-server-error':
-    command => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
-    path    => '/usr/bin/:/bin/',
+exec { 'fix-wordpress':
+  command => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
+  path    => '/usr/local/bin/:/bin/'
 }
