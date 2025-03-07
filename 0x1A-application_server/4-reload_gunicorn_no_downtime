@@ -1,16 +1,4 @@
 #!/usr/bin/env bash
-# Gracefully reloads Gunicorn
-
-# Find the master process ID of Gunicorn
-MASTER_PID=$(pgrep -f "gunicorn.*master" | head -n 1)
-
-if [ -z "$MASTER_PID" ]; then
-    echo "Gunicorn master process not found"
-    exit 1
-fi
-
-# Send HUP signal to master process to gracefully reload workers
-echo "Sending HUP signal to Gunicorn master process (PID: $MASTER_PID)"
-kill -HUP "$MASTER_PID"
-
-echo "Gunicorn workers are being gracefully reloaded"
+# Gracefully reloads Gunicorn.
+#shellcheck disable=SC2009
+ps aux | grep gunicorn | awk '{ print $2 }' | xargs kill -HUP
